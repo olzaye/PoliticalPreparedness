@@ -17,12 +17,17 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            it.buildConfigField 'String', 'CIVIC_API_KEY', "\"AIzaSyAvOTmPPJMCU-dKZiKlknqH7IgMtijRP_E\""
+        }
     }
+
     androidExtensions {
         experimental = true
     }
@@ -68,7 +73,8 @@ dependencies {
     implementation "com.squareup.moshi:moshi-adapters:$version_moshi"
 
     // Glide
-    //TODO: Add Glide Implementation
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     //Room
     implementation "androidx.room:room-runtime:$version_room"

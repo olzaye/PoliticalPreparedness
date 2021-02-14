@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_padding">8dp</dimen>
-
-    <!-- TODO: Add necessary dimension values -->s
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="text_size_24sp">24sp</dimen>
 
 </resources>
