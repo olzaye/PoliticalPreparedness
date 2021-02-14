@@ -11,7 +11,8 @@ interface ElectionDao {
 
     //TODO: Add insert query
 
-    //TODO: Add select all election query
+    @Query("SELECT * FROM election_table")
+    suspend fun getElections(): List<Election>
 
     //TODO: Add select single election query
 

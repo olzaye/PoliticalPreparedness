@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Add node to connect Election ViewModel -->
+    <data>
+
+        <variable
+            name="electionViewModel"
+            type="com.example.android.politicalpreparedness.election.ElectionsViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,6 +35,8 @@
             android:layout_marginStart="@dimen/default_padding"
             android:layout_marginTop="@dimen/default_padding"
             android:layout_marginEnd="@dimen/default_padding"
+            android:liveData="@{electionViewModel.elections}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/upcomingElectionsTextView" />
@@ -54,6 +61,8 @@
             android:layout_marginStart="@dimen/default_padding"
             android:layout_marginTop="@dimen/default_padding"
             android:layout_marginEnd="@dimen/default_padding"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:liveData="@{electionViewModel.savedElections}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/savedElectionsTextView" />

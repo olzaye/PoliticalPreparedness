@@ -1,16 +1,63 @@
 package com.example.android.politicalpreparedness.election
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.election.data.ElectionDataSource
+import com.example.android.politicalpreparedness.network.Result
+import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.ElectionResponse
+import kotlinx.coroutines.launch
 
-//TODO: Construct ViewModel and provide election datasource
-class ElectionsViewModel: ViewModel() {
+class ElectionsViewModel(private val electionDataSource: ElectionDataSource) : ViewModel() {
 
-    //TODO: Create live data val for upcoming elections
+    companion object {
+        const val TAG = "ElectionsViewModel"
+    }
 
-    //TODO: Create live data val for saved elections
+    private val _elections = MutableLiveData<List<Election>>()
+    val elections: LiveData<List<Election>>
+        get() = _elections
 
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
+    private val _savedElections = MutableLiveData<List<Election>>()
+    val savedElections: LiveData<List<Election>>
+        get() = _savedElections
 
-    //TODO: Create functions to navigate to saved or upcoming election voter info
+    init {
+        getElections()
+        getSavedElections()
+    }
 
+    private fun getElections() {
+        viewModelScope.launch {
+            when (val result = electionDataSource.getElectionFromApi()) {
+                is Result.Success<*> -> {
+                    result.data?.let { data ->
+                        _elections.value = (data as ElectionResponse).elections
+                    }
+                }
+                is Result.Error -> {
+                    Log.e(TAG, result.message)
+                }
+            }
+        }
+    }
+
+
+    private fun getSavedElections() {
+        viewModelScope.launch {
+            when (val result = electionDataSource.getSavedElection()) {
+                is Result.Success<*> -> {
+                    result.data?.let { data ->
+                        _elections.value = data as List<Election>
+                    }
+                }
+                is Result.Error -> {
+                    Log.e(TAG, result.message)
+                }
+            }
+        }
+    }
 }

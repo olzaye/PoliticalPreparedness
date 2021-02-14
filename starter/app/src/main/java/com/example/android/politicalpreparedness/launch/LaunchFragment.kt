@@ -21,7 +21,6 @@ class LaunchFragment : Fragment() {
 
         binding.representativeButton.setOnClickListener { navToRepresentatives() }
         binding.upcomingButton.setOnClickListener { navToElections() }
-
         return binding.root
     }
 
@@ -32,5 +31,4 @@ class LaunchFragment : Fragment() {
     private fun navToRepresentatives() {
         this.findNavController().navigate(LaunchFragmentDirections.actionLaunchFragmentToRepresentativeFragment())
     }
-
 }
