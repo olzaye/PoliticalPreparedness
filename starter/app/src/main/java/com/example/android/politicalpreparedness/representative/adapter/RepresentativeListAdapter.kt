@@ -31,7 +31,7 @@ class RepresentativeViewHolder(val binding: ViewHolderRepresentativeBinding) : R
 
     companion object {
         fun from(parent: ViewGroup): RepresentativeViewHolder {
-            return RepresentativeViewHolder(ViewHolderRepresentativeBinding.inflate(LayoutInflater.from(parent.context)))
+            return RepresentativeViewHolder(ViewHolderRepresentativeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
     }
 

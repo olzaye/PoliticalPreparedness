@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.election.data.ElectionRepository
+import com.example.android.politicalpreparedness.launch.LaunchFragmentDirections
 import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.network.models.Division
 
 class ElectionsFragment : Fragment(), ElectionListener {
 
@@ -30,11 +34,14 @@ class ElectionsFragment : Fragment(), ElectionListener {
         binding.lifecycleOwner = this
         binding.electionViewModel = viewModel
 
-        val adapter = ElectionListAdapter(this)
-        binding.upcomingElectionsRecyclerView.adapter = adapter
-        binding.savedElectionsRecyclerView.adapter = adapter
+        binding.upcomingElectionsRecyclerView.adapter = ElectionListAdapter(this)
+        binding.savedElectionsRecyclerView.adapter = ElectionListAdapter(this)
 
         return binding.root
+    }
+
+    override fun onElectionClick(id: Int, division: Division) {
+        this@ElectionsFragment.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(id, division))
     }
 
     //TODO: Refresh adapters when fragment loads

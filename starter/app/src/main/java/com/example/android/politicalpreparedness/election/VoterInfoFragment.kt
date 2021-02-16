@@ -3,18 +3,34 @@ package com.example.android.politicalpreparedness.election
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.example.android.politicalpreparedness.election.data.ElectionRepository
+import com.example.android.politicalpreparedness.network.CivicsApi
 
 class VoterInfoFragment : Fragment() {
 
+    private val viewModel by lazy {
+        ViewModelProvider(this,
+                VoterInfoViewModelFactory(ElectionRepository(CivicsApi.retrofitService,
+                        ElectionDatabase.getInstance(requireContext()).electionDao))).get(VoterInfoViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
-        //TODO: Add ViewModel values and create ViewModel
         val binding = FragmentVoterInfoBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.voterInfoViewModel = viewModel
 
-        //TODO: Add binding values
+        arguments?.let {
+            val args = VoterInfoFragmentArgs.fromBundle(it)
+            viewModel.passArguments(args.argElectionId, args.argDivision)
+        }
+
 
         //TODO: Populate voter info -- hide views without provided data.
         /**

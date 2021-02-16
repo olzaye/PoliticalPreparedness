@@ -1,13 +1,22 @@
 package com.example.android.politicalpreparedness.election
 
-import androidx.lifecycle.ViewModel
-import com.example.android.politicalpreparedness.database.ElectionDao
+import android.util.Log
+import androidx.lifecycle.*
+import com.example.android.politicalpreparedness.network.Result
+import com.example.android.politicalpreparedness.election.data.ElectionDataSource
+import com.example.android.politicalpreparedness.network.models.Division
+import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
+import kotlinx.coroutines.launch
 
-class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
+class VoterInfoViewModel(private val electionDataSource: ElectionDataSource) : ViewModel() {
 
-    //TODO: Add live data to hold voter info
+    private val _voterInfo = MutableLiveData<VoterInfoResponse>()
+    val voterInfo: LiveData<VoterInfoResponse>
+        get() = _voterInfo
 
-    //TODO: Add var and methods to populate voter info
+    val toolbarTitle = Transformations.map(voterInfo) {
+        it.election.name
+    }
 
     //TODO: Add var and methods to support loading URLs
 
@@ -18,4 +27,29 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
      * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
      */
 
+    fun passArguments(argElectionId: Int, argDivision: Division) {
+        viewModelScope.launch {
+            val result = electionDataSource.getVoterInfo(mapOf(
+                    "electionId" to argElectionId,
+                    "address" to "${argDivision.country}, ${argDivision.state}"
+            ))
+
+            when (result) {
+                is Result.Success<*> -> {
+                    result.data?.let {
+                        _voterInfo.value = it as VoterInfoResponse
+                    } ?: run {
+                        //show toast
+                    }
+                }
+                is Result.Error -> {
+                    Log.e("VoterInfoViewModel", result.message)
+                }
+            }
+        }
+    }
+
+    fun onSaveElection() {
+
+    }
 }

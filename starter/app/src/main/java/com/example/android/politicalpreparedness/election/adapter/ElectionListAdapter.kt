@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.databinding.ViewHolderElectionBinding
+import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 
 class ElectionListAdapter(private val clickListener: ElectionListener) :
@@ -16,7 +17,12 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
     }
 
     override fun onBindViewHolder(holder: ElectionViewHolder, position: Int) {
-        holder.binding.election = getItem(position)
+        val election = getItem(position)
+        holder.binding.election = election
+        holder.binding.executePendingBindings()
+        holder.binding.root.setOnClickListener {
+            clickListener.onElectionClick(election.id, election.division)
+        }
     }
 }
 
@@ -26,24 +32,22 @@ class ElectionViewHolder(val binding: ViewHolderElectionBinding) : RecyclerView.
         fun from(parent: ViewGroup): ElectionViewHolder {
             return ElectionViewHolder(ViewHolderElectionBinding.inflate(
                     LayoutInflater.from(parent.context),
-                    null,
+                    parent,
                     false))
         }
     }
 }
 
-//TODO: Create ElectionDiffCallback
-
 class ElectionDiffCallback : DiffUtil.ItemCallback<Election>() {
     override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
-        TODO("Not yet implemented")
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
-        TODO("Not yet implemented")
+        return oldItem == newItem
     }
 }
 
-//TODO: Create ElectionListener
 interface ElectionListener {
+    fun onElectionClick(id: Int, division: Division)
 }

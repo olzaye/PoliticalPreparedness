@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.network
 
+import com.example.android.politicalpreparedness.network.jsonadapter.CustomDateAdapter
 import com.example.android.politicalpreparedness.network.jsonadapter.ElectionAdapter
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
@@ -14,8 +15,9 @@ import retrofit2.http.QueryMap
 private const val BASE_URL = "https://www.googleapis.com/civicinfo/v2/"
 
 private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
+        .add(CustomDateAdapter())
         .add(ElectionAdapter())
+        .add(KotlinJsonAdapterFactory())
         .build()
 
 private val retrofit = Retrofit.Builder()
@@ -29,13 +31,14 @@ private val retrofit = Retrofit.Builder()
  *  Documentation for the Google Civics API Service can be found at https://developers.google.com/civic-information/docs/v2
  */
 
+@JvmSuppressWildcards
 interface CivicsApiService {
 
-    @GET("/elections")
+    @GET("elections")
     suspend fun getElections(): ElectionResponse?
 
-    @GET("/voterinfo")
-    suspend fun getVoterInfo(@QueryMap map: Map<String, String>): VoterInfoResponse?
+    @GET("voterinfo")
+    suspend fun getVoterInfo(@QueryMap map: Map<String, Any>): VoterInfoResponse?
 
     //TODO: Add representatives API Call
 }
