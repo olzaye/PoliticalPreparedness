@@ -9,4 +9,6 @@ interface ElectionDataSource {
     suspend fun getElectionFromApi(): Result<ElectionResponse>
     suspend fun getSavedElection(): Result<List<Election>>
     suspend fun getVoterInfo(map: Map<String, Any>) : Result<VoterInfoResponse>
+    suspend fun saveElection(election: Election)
+    suspend fun deleteElection(electionId: Int)
 }

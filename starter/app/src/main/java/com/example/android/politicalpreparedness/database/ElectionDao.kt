@@ -16,7 +16,7 @@ interface ElectionDao {
     suspend fun getElectionsById(electionId: Int): List<Election>
 
     @Query("DELETE FROM election_table WHERE id = :electionId")
-    suspend fun deleteAllReminders(electionId: Int)
+    suspend fun deleteElectionById(electionId: Int)
 
     @Query("DELETE FROM election_table")
     suspend fun deleteAllReminders()

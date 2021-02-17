@@ -5,7 +5,14 @@
     <string name="text_upcoming_elections">Upcoming Elections</string>
     <string name="description_launch_icon">launch icon</string>
     <string name="text_saved_elections">Saved Elections</string>
-
-    <!-- TODO: Add necessary string values -->
+    <string name="election_information">Election Information</string>
+    <string name="election_date">Election Date</string>
+    <string name="ballot_information">Ballot Information</string>
+    <string name="voting_locations">Voting Locations</string>
+    <string name="follow_election_text">Follow Election</string>
+    <string name="un_follow_election">unfollow Election</string>
+    <string name="error_title">Error</string>
+    <string name="error_message">Some data is missing. Please try again later.</string>
+    <string name="ok">ok</string>
 
 </resources>

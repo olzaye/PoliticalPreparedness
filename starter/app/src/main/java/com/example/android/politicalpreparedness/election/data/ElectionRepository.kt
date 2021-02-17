@@ -50,4 +50,16 @@ class ElectionRepository(
             }
         }
     }
+
+    override suspend fun saveElection(election: Election) {
+        withContext(ioDispatcher) {
+            electionDao.saveElection(election)
+        }
+    }
+
+    override suspend fun deleteElection(electionId: Int) {
+        withContext(ioDispatcher) {
+            electionDao.deleteElectionById(electionId)
+        }
+    }
 }

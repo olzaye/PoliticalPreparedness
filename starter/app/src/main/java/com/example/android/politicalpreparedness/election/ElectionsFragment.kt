@@ -44,5 +44,8 @@ class ElectionsFragment : Fragment(), ElectionListener {
         this@ElectionsFragment.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(id, division))
     }
 
-    //TODO: Refresh adapters when fragment loads
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loadData()
+    }
 }
