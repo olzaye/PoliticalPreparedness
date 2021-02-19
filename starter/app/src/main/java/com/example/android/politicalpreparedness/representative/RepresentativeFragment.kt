@@ -40,6 +40,8 @@ class DetailFragment : Fragment(), LocationListener {
 
     lateinit var binding: FragmentRepresentativeBinding
 
+    private var snackbar: Snackbar? = null
+
     private val locationManager by lazy {
         requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
@@ -73,7 +75,7 @@ class DetailFragment : Fragment(), LocationListener {
 
             getLocation()
         } else {
-            Snackbar.make(binding.root, R.string.permission_denied_explanation, Snackbar.LENGTH_SHORT)
+            snackbar = Snackbar.make(binding.root, R.string.permission_denied_explanation, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.settings) {
                         if (isAdded) {
                             startActivity(Intent().apply {
@@ -82,8 +84,15 @@ class DetailFragment : Fragment(), LocationListener {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             })
                         }
-                    }.show()
+                    }
+
+            snackbar?.show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        snackbar?.dismiss()
     }
 
     private fun checkLocationPermissions() {

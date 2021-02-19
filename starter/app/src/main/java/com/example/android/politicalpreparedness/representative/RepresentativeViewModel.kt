@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class RepresentativeViewModel : ViewModel() {
 
     val addressInputMutableLiveData = MutableLiveData<Address>().apply {
-        value = Address("148 West River Street", "", "Providence", "Rhode Island", "2904")
+        value = Address()
     }
     private val addressInput: LiveData<Address>
         get() = addressInputMutableLiveData

@@ -25,19 +25,26 @@ class ElectionsViewModel(private val electionDataSource: ElectionDataSource) : V
     val savedElections: LiveData<List<Election>>
         get() = _savedElections
 
+    private val _shouldShownProgress = MutableLiveData<Boolean>()
+    val shouldShownProgress: LiveData<Boolean>
+        get() = _shouldShownProgress
+
     init {
         getElections()
     }
 
     private fun getElections() {
         viewModelScope.launch {
+            _shouldShownProgress.value = true
             when (val result = electionDataSource.getElectionFromApi()) {
                 is Result.Success<*> -> {
+                    _shouldShownProgress.value = false
                     result.data?.let { data ->
                         _elections.value = (data as ElectionResponse).elections
                     }
                 }
                 is Result.Error -> {
+                    _shouldShownProgress.value = false
                     Log.e(TAG, result.message)
                 }
             }

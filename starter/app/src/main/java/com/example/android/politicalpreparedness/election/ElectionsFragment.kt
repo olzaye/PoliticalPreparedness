@@ -36,7 +36,6 @@ class ElectionsFragment : Fragment(), ElectionListener {
 
         binding.upcomingElectionsRecyclerView.adapter = ElectionListAdapter(this)
         binding.savedElectionsRecyclerView.adapter = ElectionListAdapter(this)
-
         return binding.root
     }
 
