@@ -39,12 +39,12 @@ class VoterInfoViewModel(private val electionDataSource: ElectionDataSource) : V
         it.state?.firstOrNull()?.name
     }
 
-    val locationLink by lazy {
-        voterInfo.value?.state?.firstOrNull()?.electionAdministrationBody?.votingLocationFinderUrl
+    val locationLink = Transformations.map(voterInfo) {
+        it?.state?.firstOrNull()?.electionAdministrationBody?.votingLocationFinderUrl
     }
 
-    val ballotInfoLink by lazy {
-        voterInfo.value?.state?.firstOrNull()?.electionAdministrationBody?.ballotInfoUrl
+    val ballotInfoLink = Transformations.map(voterInfo) {
+        it?.state?.firstOrNull()?.electionAdministrationBody?.ballotInfoUrl
     }
 
     private val _openLinkAction = MutableLiveData<String>()
@@ -75,8 +75,6 @@ class VoterInfoViewModel(private val electionDataSource: ElectionDataSource) : V
                     _showProgressBar.value = false
                     result.data?.let {
                         _voterInfo.value = it as VoterInfoResponse
-                    } ?: run {
-                        //show toast
                     }
                 }
                 is Result.Error -> {

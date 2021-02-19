@@ -1,26 +1,45 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.network.getRepresentativeDeferred
+import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.model.Representative
+import kotlinx.coroutines.launch
 
-class RepresentativeViewModel: ViewModel() {
+class RepresentativeViewModel : ViewModel() {
 
-    //TODO: Establish live data for representatives and address
+    val addressInputMutableLiveData = MutableLiveData<Address>().apply {
+        value = Address("148 West River Street", "", "Providence", "Rhode Island", "2904")
+    }
+    private val addressInput: LiveData<Address>
+        get() = addressInputMutableLiveData
 
-    //TODO: Create function to fetch representatives from API from a provided address
+    private val _representatives = MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>?>
+        get() = _representatives
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
 
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
+    fun onFindRepresentativeClick() {
+        fetchRepresentatives()
+    }
 
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
+    private fun fetchRepresentatives() {
+        viewModelScope.launch {
+            try {
+                val (offices, officials) = getRepresentativeDeferred(mapOf("address" to addressInput.value?.toFormattedString())).await()
+                _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
+            } catch (e: Exception) {
+                Log.e("Error fetch Data", "Error 1 ${e.message}")
+            }
+        }
+    }
 
-     */
-
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
-
+    fun getGeolocationAddress(address: Address) {
+        addressInputMutableLiveData.value = address
+        fetchRepresentatives()
+    }
 }

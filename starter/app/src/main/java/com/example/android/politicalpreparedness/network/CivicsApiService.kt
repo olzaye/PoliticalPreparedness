@@ -2,11 +2,13 @@ package com.example.android.politicalpreparedness.network
 
 import com.example.android.politicalpreparedness.network.jsonadapter.CustomDateAdapter
 import com.example.android.politicalpreparedness.network.jsonadapter.ElectionAdapter
-import com.example.android.politicalpreparedness.network.models.ElectionResponse
-import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
+import com.example.android.politicalpreparedness.network.models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -40,11 +42,21 @@ interface CivicsApiService {
     @GET("voterinfo")
     suspend fun getVoterInfo(@QueryMap map: Map<String, Any>): VoterInfoResponse?
 
-    //TODO: Add representatives API Call
+    @GET("representatives")
+    suspend fun getRepresentativeDeferredAsync(@QueryMap map: Map<String, Any?>): RepresentativeResponse
 }
 
 object CivicsApi {
     val retrofitService: CivicsApiService by lazy {
         retrofit.create(CivicsApiService::class.java)
+    }
+}
+
+suspend fun getRepresentativeDeferred(map: Map<String, Any?>): Deferred<Pair<List<Office>, List<Official>>> {
+    return coroutineScope {
+        return@coroutineScope async {
+            val representativeResponse = CivicsApi.retrofitService.getRepresentativeDeferredAsync(map)
+            return@async Pair(representativeResponse.offices,representativeResponse.officials)
+        }
     }
 }

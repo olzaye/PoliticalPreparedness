@@ -25,9 +25,8 @@ class ElectionsViewModel(private val electionDataSource: ElectionDataSource) : V
     val savedElections: LiveData<List<Election>>
         get() = _savedElections
 
-    fun loadData() {
+    init {
         getElections()
-        getSavedElections()
     }
 
     private fun getElections() {
@@ -46,7 +45,7 @@ class ElectionsViewModel(private val electionDataSource: ElectionDataSource) : V
     }
 
 
-    private fun getSavedElections() {
+    fun getSavedElections() {
         viewModelScope.launch {
             when (val result = electionDataSource.getSavedElection()) {
                 is Result.Success<*> -> {

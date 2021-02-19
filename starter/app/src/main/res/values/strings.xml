@@ -14,5 +14,21 @@
     <string name="error_title">Error</string>
     <string name="error_message">Some data is missing. Please try again later.</string>
     <string name="ok">ok</string>
+    <string name="representatives_result">Representatives Result</string>
+    <string name="representatives_search">Representatives Search</string>
+    <string name="hint_address_line_1">Address Line 1</string>
+    <string name="hint_address_line_2">Address Line 2</string>
+    <string name="hint_city">City</string>
+    <string name="hint_zip">Zip</string>
+    <string name="button_text_find_my_representatives">Find my Representatives</string>
+    <string name="button_text_use_my_location">use my location</string>
+    <string name="twitter_icon">Twitter icon</string>
+    <string name="user_icon">user icon</string>
+    <string name="facebook_icon">facebook icon</string>
+    <string name="browser_icon">browser icon</string>
+    <string name="permission_denied_explanation">You need to grant location permission in order to select the location.</string>
+    <string name="settings">Settings</string>
+    <string name="okay">ok</string>
+    <string name="location_required_error"><![CDATA[Location services must be enabled to use the app<]]></string>
 
 </resources>

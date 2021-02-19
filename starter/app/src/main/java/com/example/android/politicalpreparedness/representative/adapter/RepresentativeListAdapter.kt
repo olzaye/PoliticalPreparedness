@@ -52,7 +52,7 @@ class RepresentativeViewHolder(val binding: ViewHolderRepresentativeBinding) : R
 
         val twitterUrl = getTwitterUrl(channels)
         if (!twitterUrl.isNullOrBlank()) {
-            enableLink(binding.facebookIcon, twitterUrl)
+            enableLink(binding.twitterIcon, twitterUrl)
         }
     }
 
@@ -93,9 +93,4 @@ class RepresentativeDiffCallback : DiffUtil.ItemCallback<Representative>() {
     override fun areContentsTheSame(oldItem: Representative, newItem: Representative): Boolean {
         return oldItem == newItem
     }
-}
-
-//TODO: Create RepresentativeListener
-interface RepresentativeListener {
-
 }
