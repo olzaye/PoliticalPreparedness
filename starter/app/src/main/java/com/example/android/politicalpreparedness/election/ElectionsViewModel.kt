@@ -30,10 +30,10 @@ class ElectionsViewModel(private val electionDataSource: ElectionDataSource) : V
         get() = _shouldShownProgress
 
     init {
-        getElections()
+        getElectionsFromApi()
     }
 
-    private fun getElections() {
+    private fun getElectionsFromApi() {
         viewModelScope.launch {
             _shouldShownProgress.value = true
             when (val result = electionDataSource.getElectionFromApi()) {
