@@ -52,7 +52,7 @@ class ElectionsViewModel(private val electionDataSource: ElectionDataSource) : V
     }
 
 
-    fun getSavedElections() {
+    fun getFollowedElections() {
         viewModelScope.launch {
             when (val result = electionDataSource.getSavedElection()) {
                 is Result.Success<*> -> {
